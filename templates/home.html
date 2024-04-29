@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Home Page</title>
+{% endblock %}
+
+{% block contain %}
+    <div class="container text-center mt-2">
+        <h1 >Welcome to home</h1>
+        <b>Featured Products:</b>
+        <hr/>
+        <div class="row">
+            {% for product in products %}
+                    <div class="col-lg-4">
+                        {% include 'products/snippets/product-card.html' with product=product %}
+                    </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

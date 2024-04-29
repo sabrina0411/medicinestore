@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Home Page</title>
+{% endblock %}
+
+{% block contain %}
+    <div class="container text-center mt-2">
+        <h1>Profile</h1>
+        <p>{{ user.email }}</p>
+        <p>{{ user.get_full_name }}</p>
+        <h1>Addresses:</h1>
+        <ul>
+            {% for billing_profile in billing_profiles %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Address Line 1</th>
+                        <th scope="col">Address Line 2</th>
+                        <th scope="col">City</th>
+                        <th scope="col">State</th>
+                        <th scope="col">Postal Code</th>
+                        <th scope="col">Country</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for address in billing_profile.address_set.all %}
+                        <tr>
+                            <th scope="row">{{ address.id }}</th>
+                            <td>{{ address.address_line_1 }}</td>
+                            <td>{{ address.address_line_2 }}</td>
+                            <td>{{ address.city }}</td>
+                            <td>{{ address.state }}</td>
+                            <td>{{ address.postal_code }}</td>
+                            <td>{{ address.country }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        </ul>
+        <h1>Orders:</h1>
+        <ul>
+            {% for billing_profile in billing_profiles %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Shipping Cost</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Shipping Address</th>
+                        <th scope="col">Billing Address</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for order in billing_profile.order_set.all %}
+                        <tr>
+                            <th scope="row">{{ order.order_id }}</th>
+                            <td>
+                                {% if order.status == 'created' %}
+                                    <span class="badge badge-primary">{{ order.status }}</span>
+                                {% elif order.status == 'paid' %}
+                                    <span class="badge badge-success">{{ order.status }}</span>
+                                {% elif order.status == 'shipped' %}
+                                    <span class="badge badge-info">{{ order.status }}</span>
+                                {% elif order.status == 'refunded' %}
+                                    <span class="badge badge-danger">{{ order.status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ order.shipping_total }}</td>
+                            <td>{{ order.total }}</td>
+                            <td>{{ order.shipping_address.get_address }}</td>
+                            <td>{{ order.billing_address.get_address }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

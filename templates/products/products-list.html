@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>All Products</title>
+{% endblock %}
+
+{% block contain %}
+    <div class="container">
+        <div class="row">
+            {% if products|length == 0 %}
+                <div class="col-lg-12">
+                    <h1>No products found</h1>
+                </div>
+            {% else %}
+                {% for product in products %}
+                    <div class="col-lg-4">
+                        {% include 'products/snippets/product-card.html' with product=product %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
